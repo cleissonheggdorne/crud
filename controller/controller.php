@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "./model/repository/repositoryPDO.php";
+require_once "./model/repository/RepositoryPDO.php";
 class Controller{
     public function save($request){
         $dadosFornecedor =  $request;
@@ -16,6 +16,20 @@ class Controller{
             $_SESSION['msg'] = $retorno;
             header("location: /");
         };
+    }
 
+    public function listarDados(){
+        $repository = new RepositoryPDO();
+        $dados = $repository->listaDados();
+        if(!($dados['dados'] === false)){
+            return $dados['dados'];
+        }else{
+            return "NÃO HÁ DADOS PARA INSERIR";
+        }
+    }
+    public function edit($id){
+        $res = ['success'=>'ok'];
+        header('Content-type: application/json');
+        echo json_encode($res);
     }
 }

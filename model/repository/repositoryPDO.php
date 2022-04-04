@@ -1,12 +1,12 @@
 <?php
-require "conexao.php";
+require_once "Conexao.php";
 class RepositoryPDO{
 
-    private $conexao;
+    private $conect;
 
     public function __construct()
     {
-        $this->conexao = Conexao::criar();
+        $this->conect = Conexao::criar();
     }
 
     public function salvarFornecedor($dadosFornecedor){
@@ -25,7 +25,7 @@ class RepositoryPDO{
                 
                 COMMIT;";
         
-        $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conect->prepare($sql);
         $stmt->bindValue(':nome', $dadosFornecedor['nome'], PDO::PARAM_STR);
         $stmt->bindValue(':descricao',$dadosFornecedor['descricao'], PDO::PARAM_STR);
         $stmt->bindValue(':cidade', $dadosFornecedor['cidade'], PDO::PARAM_STR);
@@ -44,5 +44,21 @@ class RepositoryPDO{
         }else{
             return $situacao;
         }
+    }
+
+    public function listaDados(){
+        $sql = "SELECT id, nome, cidade FROM fornecedor";
+        $stmt = $this->conect->prepare($sql);
+        $stmt->execute();
+        if($stmt->rowCount()){
+            $dadosFornecedor = array();
+            while ($dado = $stmt->fetch(PDO::FETCH_ASSOC)){
+                array_push($dadosFornecedor, $dado);
+            }
+            return ['dados'=>$dadosFornecedor];
+        }else{
+            return ['dados'=>false];
+        }
+        
     }
 }

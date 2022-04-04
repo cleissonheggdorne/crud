@@ -12,6 +12,16 @@ switch ($metodo){
         $controll->save($_REQUEST);
         break;
     case "GET";
+        $_SESSION['msg'] = $rota;
+        if(substr($rota, 0 , strlen("/controle/editar/")) === "/controle/editar/"){
+            $controll = new Controller();
+            $controll->edit(basename($rota));
+            //exit;
+            //header('Content-type: application/json');
+            //echo json_encode(['teste'=>'teste']);
+        }
+       
+
         require "./view/estrutura/main.php";
         break;
 }

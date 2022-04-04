@@ -1,7 +1,9 @@
 <?php
 session_start();
-require "cabecalho.php";
-include "./util/mensagem.php";
+require_once "cabecalho.php";
+include_once "./util/mensagem.php";
+
+
 
 ?>
 
@@ -17,13 +19,7 @@ include "./util/mensagem.php";
                         <li class="tab"><a href="#produtos">Produtos</a></li>
                         <li class="tab"><a href="#transportadoras">Transportadoras</a></li>
                     </ul>
-                        <div id="fornecedores" class="col s12">
-                            <!-- <p class='card-panel red lighten-4'> -->
-                                <a class="modal-trigger waves-effect waves-light btn" href="#novo-forn">Novo</a>
-                            <!-- </p> -->
-
-                           
-                        </div>
+                        
 
                        
                         <div id="produtos" class="col s12">
@@ -35,7 +31,6 @@ include "./util/mensagem.php";
                                 <a class="modal-trigger waves-effect waves-light btn" href="#novo-transp">Novo</a></p>
                         </div> 
                         
-                    </div>
                 </div>
             </nav>
 
@@ -46,19 +41,28 @@ include "./util/mensagem.php";
             </ul>
         </div>
         
-       
+    <main class="container">
 
-    <main>
-    <div class="container">
-            <ul class="collection with-header">
-                <li class="collection-header"><h4>First Names</h4></li>
-                <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-                <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-                <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-                <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-            </ul>
-    </div>
-        <!-- Modal Cadastrar Fornecedor  -->
+    <ul class="collection with-header">
+        <li class="collection-header"><h4>First Names</h4>
+            <div id="fornecedores" class="col s12">           
+                <a class="modal-trigger waves-effect waves-light btn" href="#novo-forn">Novo</a>
+            </div>
+        </li>
+
+        <?php
+        include_once "./controller/Controller.php";
+        $control = new Controller();
+        $dados = $control->listarDados();
+        foreach ($dados as $dado) :
+        ?>
+        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#!" class="secondary-content" onclick="editarFilme(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        <?php endforeach ?>
+        </ul>
+      
+    </main>
+
+    <!-- Modal Cadastrar Fornecedor  -->
     <div class="row">
             <!-- Modal Structure -->
             <div id="novo-forn" class="modal modal-fixed-footer">
@@ -69,7 +73,7 @@ include "./util/mensagem.php";
                         <span class="card-title black-text">Cadastrar Fornecedor</span>
 
                         <form method="POST">
-                            <!-- <input name="id" id="id-edt" type="hidden" value=""></input> -->
+                             <input name="id" id="id-edt" type="hidden" value=""></input> 
                             <div class="row">
                                 <div class="col s12 m12 l12">
                                     <div class="col s6 m6 l6">
@@ -150,18 +154,18 @@ include "./util/mensagem.php";
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>  
                             </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <a class="waves-effect waves-light btn grey" href="/">Cancelar</a>
-                    <button type="submit" class="waves-effect waves-light btn purple">Salvar Alterações</a>
+                    <button type="submit" class="waves-effect waves-light btn purple">Salvar Alterações</button>
                 </div>
                 </form>
             </div>
         </div>
-    </main>
+    
 
     <?= Mensagem::mostrar(); ?>
     <!--JavaScript at end of body for optimized loading-->
