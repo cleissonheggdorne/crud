@@ -44,9 +44,9 @@ include_once "./util/mensagem.php";
     <main class="container">
 
     <ul class="collection with-header">
-        <li class="collection-header"><h4>First Names</h4>
+        <li class="collection-header"><h4>Fornecedores</h4>
             <div id="fornecedores" class="col s12">           
-                <a class="modal-trigger waves-effect waves-light btn" href="#novo-forn">Novo</a>
+                <a class="modal-trigger waves-effect waves-light btn" href="#form-fornecedor">Novo</a>
             </div>
         </li>
 
@@ -56,7 +56,7 @@ include_once "./util/mensagem.php";
         $dados = $control->listarDados();
         foreach ($dados as $dado) :
         ?>
-        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#!" class="secondary-content" onclick="editarFilme(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form-fornecedor" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
         <?php endforeach ?>
         </ul>
       
@@ -65,7 +65,7 @@ include_once "./util/mensagem.php";
     <!-- Modal Cadastrar Fornecedor  -->
     <div class="row">
             <!-- Modal Structure -->
-            <div id="novo-forn" class="modal modal-fixed-footer">
+            <div id="form-fornecedor" class="modal modal-fixed-footer">
                 
                 <div class="modal-content">
 
@@ -73,7 +73,9 @@ include_once "./util/mensagem.php";
                         <span class="card-title black-text">Cadastrar Fornecedor</span>
 
                         <form method="POST">
-                             <input name="id" id="id-edt" type="hidden" value=""></input> 
+                             <input name="idf" id="id-fornecedor" type="hidden" value=""></input> 
+                             <input name="idt" id="id-telefone" type="hidden" value=""></input>
+                             <input name="ide" id="id-email" type="hidden" value=""></input>
                             <div class="row">
                                 <div class="col s12 m12 l12">
                                     <div class="col s6 m6 l6">
@@ -138,11 +140,11 @@ include_once "./util/mensagem.php";
                                         <!--input do numero telefone -->
                                         <div class="row">
                                             <div class="input-field col s3">
-                                                <input placeholder="" id="ddd" value="" type="number" min=0 class="validate" name="ddd" value="022">
+                                                <input placeholder="" id="ddd" value="" type="number" min=0 class="validate" required name="ddd" value="022">
                                                 <label for="ddd">DDD</label>
                                             </div>
                                             <div class="input-field col s9">
-                                                <input placeholder="" id="numero-tel" value="" type="text" class="validate" require name="numero_tel" value="22222222">
+                                                <input placeholder="" id="numero_tel" type="text" class="validate" required name="numero_tel" value="22222222">
                                                 <label for="numero-tel">Número Tel</label>
                                             </div>
                                         </div>
@@ -160,7 +162,7 @@ include_once "./util/mensagem.php";
                 </div>
                 <div class="modal-footer">
                     <a class="waves-effect waves-light btn grey" href="/">Cancelar</a>
-                    <button type="submit" class="waves-effect waves-light btn purple">Salvar Alterações</button>
+                    <button type="submit" class="waves-effect waves-light btn purple" id="gravar">Salvar Alterações</button>
                 </div>
                 </form>
             </div>
@@ -171,3 +173,4 @@ include_once "./util/mensagem.php";
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
+</html>

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once "./model/repository/RepositoryPDO.php";
 class Controller{
@@ -24,12 +25,15 @@ class Controller{
         if(!($dados['dados'] === false)){
             return $dados['dados'];
         }else{
-            return "NÃO HÁ DADOS PARA INSERIR";
+            return "NÃO HÁ DADOS PARA LISTAR";
         }
     }
     public function edit($id){
-        $res = ['success'=>'ok'];
+        $repository= new RepositoryPDO();
+        $res = $repository->infoFornecedor($id);
+        
         header('Content-type: application/json');
         echo json_encode($res);
+        
     }
 }
