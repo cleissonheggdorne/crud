@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function(){
     var nvProd = document.getElementById('novo-prod');
     var nvTransp = document.getElementById('novo-transp');
 
+    var tituloTab_prod = document.getElementById('aciona_tab_produto').innerText;
+    var tituloTab_forn = document.getElementById('aciona_tab_fornecedor').innerText;
+    var tituloTab_transp = document.getElementById('aciona_tab_transportadora').innerText;
+    var elem_select = document.querySelectorAll('select');
+    var select = M.FormSelect.init(elem_select);
+ 
+    
     var instance = M.Tabs.init(el);
 
     var instances_sidenav = M.Sidenav.init(sidenav);
@@ -21,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 });
 
+
+
 async function editarFornecedor(id){
     var edtForn = document.getElementById('novo-forn');
    
@@ -28,7 +37,6 @@ async function editarFornecedor(id){
     
     var resposta = await dados.json()
     console.log(resposta);
-    //console.log("Entrou na função")
 
      M.Modal.init(edtForn)
 
@@ -44,6 +52,9 @@ async function editarFornecedor(id){
      document.getElementById("id-fornecedor").value = resposta['dados'][0].id
      document.getElementById("id-telefone").value = resposta['dados'][0].id_tel
      document.getElementById("id-email").value = resposta['dados'][0].id_email
+     document.getElementById().id = "atualiza_registros"
+     
 
     edtForn.open()
 }
+

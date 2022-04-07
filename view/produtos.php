@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "cabecalho.php";
-include_once "./util/mensagem.php";
+require_once "./view/estrutura/cabecalho.php";
+include "./util/mensagem.php";
 
 
 
@@ -14,28 +14,16 @@ include_once "./util/mensagem.php";
                 <div class="nav-wrapper">
                 <a href="#" class="brand-logo right">Controle</a>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger left"><i class="material-icons">menu</i></a>
-                    <ul class="tabs left hide-on-med-and-down">
-                        <li class="tab"><a href="#fornecedores">Fornecedores</a></li>
-                        <li class="tab"><a href="#produtos">Produtos</a></li>
-                        <li class="tab"><a href="#transportadoras">Transportadoras</a></li>
-                    </ul>
-                        
-
-                       
-                        <div id="produtos" class="col s12">
-                            <p class='card-panel red lighten-4'>
-                                <a class="modal-trigger waves-effect waves-light btn" href="#novo-prod">Novo</a></p>
-                        </div>
-                        <div id="transportadoras" class="col s12"> 
-                            <p class='card-panel red lighten-4'>
-                                <a class="modal-trigger waves-effect waves-light btn" href="#novo-transp">Novo</a></p>
-                        </div> 
-                        
+                    <ul class="left hide-on-med-and-down">
+                        <li class=""><a href="/fornecedores"id="aciona_tab_fornecedor">Fornecedores</a></li>
+                        <li class=""><a href="/produtos" id="aciona_tab_produto">Produtos</a></li>
+                        <li class=""><a href="/transportadoras"  id="aciona_tab_transportadora">Transportadoras</a></li>
+                    </ul>  
                 </div>
             </nav>
 
             <ul class="sidenav" id="mobile-demo">
-                <li><a href="#">Produtos</a></li>
+                <li><a href="/produtos">Produtos</a></li>
                 <li><a href="#">Fornecedores</a></li>
                 <li><a href="#">Transportadoras</a></li>
             </ul>
@@ -44,25 +32,11 @@ include_once "./util/mensagem.php";
     <main class="container">
 
     <ul class="collection with-header">
-        <li class="collection-header"><h4>Fornecedores</h4>
+        <li class="collection-header"><h4 id="title_tab">Produtos</h4>
             <div id="fornecedores" class="col s12">           
                 <a class="modal-trigger waves-effect waves-light btn" href="#form-fornecedor">Novo</a>
-            </div>
-        </li>
 
-        <?php
-        include_once "./controller/Controller.php";
-        $control = new Controller();
-        $dados = $control->listarDados();
-        foreach ($dados as $dado) :
-        ?>
-        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form-fornecedor" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
-        <?php endforeach ?>
-        </ul>
-      
-    </main>
-
-    <!-- Modal Cadastrar Fornecedor  -->
+                <!-- Modal Cadastrar Fornecedor  -->
     <div class="row">
             <!-- Modal Structure -->
             <div id="form-fornecedor" class="modal modal-fixed-footer">
@@ -70,7 +44,7 @@ include_once "./util/mensagem.php";
                 <div class="modal-content">
 
                     <div class="card-content white-text">
-                        <span class="card-title black-text">Cadastrar Fornecedor</span>
+                        <span class="card-title black-text">Cadastrar Produto</span>
 
                         <form method="POST">
                              <input name="idf" id="id-fornecedor" type="hidden" value=""></input> 
@@ -94,22 +68,20 @@ include_once "./util/mensagem.php";
                                                 <label for="descricao">Descrição</label>
                                             </div>
                                         </div>
-
-                                        <!--input da Cidade-->
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input placeholder="" id="cidade" type="text" name="cidade" value="nova friburgo" required>
-                                                <label for="cidade">Cidade</label>
-                                            </div>
+                                        <div class="input-field col s12">
+                                        <?php
+                                        include_once "./controller/Controller.php";
+                                        $control = new Controller();
+                                        $dados = $control->listarDados();
+                                        ?>
+                                        <select>
+                                            <option value="1" disabled selected>Choose your option</option>
+                                        <?php foreach ($dados as $dado) : ?>
+                                            <option value="1"><?= $dado['nome'] ?></option>
+                                        <?php endforeach ?>
+                                        </select>
+                                            <label>Fornecedor</label>
                                         </div>
-                                        <!--input do Endereco -->
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input placeholder="" id="endereco" type="text" class="validate" name="endereco" value="Av Alberto Braune" required>
-                                                <label for="endereco">Endereço</label>
-                                            </div>
-                                        </div>
-
                                     </div>
 
                                     <div class="col s6 m6 l6">
@@ -167,7 +139,17 @@ include_once "./util/mensagem.php";
                 </form>
             </div>
         </div>
-    
+            </div>
+        </li>
+
+        <?php
+       
+        ?>
+        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form-fornecedor" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        <?php ?>
+    </ul>
+      
+    </main>
 
     <?= Mensagem::mostrar(); ?>
     <!--JavaScript at end of body for optimized loading-->

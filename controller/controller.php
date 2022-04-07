@@ -6,8 +6,7 @@ class Controller{
     public function save($request){
         $dadosFornecedor =  $request;
         $repository = new RepositoryPDO();
-        $_SESSION['msg'] = $dadosFornecedor;
-    
+        
         $retorno = $repository->salvarFornecedor($dadosFornecedor);
 
         if(is_bool($retorno)){

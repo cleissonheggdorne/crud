@@ -13,20 +13,40 @@ class RepositoryPDO{
         $sql = "start TRANSACTION;
 
                 INSERT INTO `fornecedor`(id, nome, descricao, cidade, endereco, bairro, numero) 
-                VALUES (DEFAULT,:nome,:descricao,:cidade,:endereco,:bairro, :numero);
-                
-                SELECT LAST_INSERT_ID() INTO @intIdFornecedor;
+                VALUES (:idForn, :nome, :descricao,:cidade,:endereco,:bairro, :numero)
+                ON DUPLICATE KEY UPDATE nome= :nome, descricao= :descricao, cidade= :cidade, endereco= :endereco, bairro= :bairro, numero= :numero;
+
+                -- SELECT :idForn INTO @intIdFornecedor;
                 
                 INSERT INTO `email`(id, email, id_fornecedor) 
-                VALUES (DEFAULT,:email, @intIdFornecedor);
-                
+                VALUES (:idEmail, :email, :idForn)
+                ON DUPLICATE KEY UPDATE email= :email;
+
                 INSERT INTO `telefone`(id, ddd, numero, id_fornecedor) 
-                VALUES (DEFAULT,:ddd, :numero_tel, @intIdFornecedor);
+                VALUES (:idTel ,:ddd, :numero_tel, :idForn)
+                ON DUPLICATE KEY UPDATE ddd= :ddd, numero= :numero_tel;
                 
                 COMMIT;";
         
         $stmt = $this->conect->prepare($sql);
-        $stmt->bindValue(':id', $dadosFornecedor['numero'], PDO::PARAM_INT);
+        
+        $idForn = 'DEFAULT';
+        $idEmail = 'DEFAULT'; 
+        $idTel = 'DEFAULT';
+        if(!(empty($dadosFornecedor['idf']))){
+            $idForn = $dadosFornecedor['idf'];
+        }else if(!(empty($dadosFornecedor['ide']))){
+            $idEmail = $dadosFornecedor['ide'];
+        }else if(!(empty($dadosFornecedor['idt']))){
+            $idTel = $dadosFornecedor['idt'];
+        }
+        //return $idForn;
+        
+
+        $stmt->bindValue(':idForn', $idForn, PDO::PARAM_INT);
+        $stmt->bindValue(':idEmail', $idEmail, PDO::PARAM_INT);
+        $stmt->bindValue(':idTel', $idTel, PDO::PARAM_INT);
+
         $stmt->bindValue(':nome', $dadosFornecedor['nome'], PDO::PARAM_STR);
         $stmt->bindValue(':descricao',$dadosFornecedor['descricao'], PDO::PARAM_STR);
         $stmt->bindValue(':cidade', $dadosFornecedor['cidade'], PDO::PARAM_STR);
@@ -37,8 +57,14 @@ class RepositoryPDO{
         $stmt->bindValue(':ddd', $dadosFornecedor['ddd'], PDO::PARAM_STR);
         $stmt->bindValue(':numero_tel', $dadosFornecedor['numero_tel'], PDO::PARAM_STR);
 
-        $stmt->execute();
+       // $stmt->execute();
         
+        try{
+            $stmt->execute();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+
         $situacao = $stmt->errorInfo();
         if($situacao[0] == 00000){
             return true;
@@ -97,7 +123,7 @@ class RepositoryPDO{
         
     }
 
-    public function($dados){
+    public function atualizaRegistroFornecedor($dados){
         $sql = "start TRANSACTION;
 
         UPDATE fornecedor

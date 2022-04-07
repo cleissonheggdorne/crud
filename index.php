@@ -1,5 +1,6 @@
 <?php
 ini_set('display_errors', 0);
+
 include "./controller/controller.php";
 
 $rota = $_SERVER["REQUEST_URI"];
@@ -25,8 +26,14 @@ switch ($metodo){
             $controll->edit(basename($rota));
             exit;
         }
-       
+        //PRODUTOS
+        if(substr($rota, 0 , strlen("/produtos")) === "/produtos"){
+           // $controll = new Controller();
+           // $controll->edit(basename($rota));
+           require "./view/produtos.php";
+            exit;
+        }
 
-        require "./view/estrutura/main.php";
+        require "./view/fornecedores.php";
         break;
 }
