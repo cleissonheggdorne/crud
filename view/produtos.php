@@ -89,43 +89,18 @@ include "./util/mensagem.php";
                                         <!--input do bairro -->
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="" id="bairro" type="text" class="validate" name="bairro" value="centro">
-                                                <label for="bairro">Bairro</label>
+                                                <input placeholder="" id="qtd" type="number" step=".1" min=0 class="validate" name="quantidade" value="centro">
+                                                <label for="bairro">Quantidade</label>
                                             </div>
                                         </div>
                                      
                                         <!--input do número-->
                                         <div class="row">
-                                            <div class="input-field col s5">
-                                                <input placeholder="" id="numero" type="number" step="1" min=0 class="validate" value="135" name="numero">
-                                                <label for="numero">Número</label>
-                                            </div>
-                                            <div class="input-field col s5">
-                                            <p>
-                                                <label>
-                                                    <input type="checkbox" />
-                                                    <span>SN</span>
-                                                </label>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <!--input do numero telefone -->
-                                        <div class="row">
-                                            <div class="input-field col s3">
-                                                <input placeholder="" id="ddd" value="" type="number" min=0 class="validate" required name="ddd" value="022">
-                                                <label for="ddd">DDD</label>
-                                            </div>
-                                            <div class="input-field col s9">
-                                                <input placeholder="" id="numero_tel" type="text" class="validate" required name="numero_tel" value="22222222">
-                                                <label for="numero-tel">Número Tel</label>
-                                            </div>
-                                        </div>
-                                        <!--input do email -->
-                                        <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="" id="email" type="text" class="validate" name="email" value="teste@teste.com">
-                                                <label for="email">E-mail</label>
+                                                <input placeholder="" id="val" type="number" step=".1" min=0 class="validate" value="135" name="valor">
+                                                <label for="numero">Valor</label>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>  
@@ -133,7 +108,7 @@ include "./util/mensagem.php";
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="waves-effect waves-light btn grey" href="/">Cancelar</a>
+                    <a class="waves-effect waves-light btn grey" href="/produtos">Cancelar</a>
                     <button type="submit" class="waves-effect waves-light btn purple" id="gravar">Salvar Alterações</button>
                 </div>
                 </form>
@@ -143,10 +118,13 @@ include "./util/mensagem.php";
         </li>
 
         <?php
-       
+        include_once "./controller/Controller.php";
+        $control = new Controller();
+        $dados = $control->listProduts();
+        foreach ($dados as $dado) :
         ?>
-        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form-fornecedor" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
-        <?php ?>
+        <li class="collection-item"><div><?= $dado['nome']." | R$".$dado['valor']?><a href="#form-produto" class="secondary-content modal-trigger" onclick="editarProduto(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        <?php endforeach ?>
     </ul>
       
     </main>

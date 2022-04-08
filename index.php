@@ -9,14 +9,18 @@ $metodo = $_SERVER["REQUEST_METHOD"];
 switch ($metodo){
     case "POST":
         
-        if(substr($rota, 0 , strlen("/controle/editar/")) === "/controle/editar/"){
+        if($_REQUEST['idf'] != "" && substr($rota, 0 , strlen("/fornecedores")) === "/fornecedores"){
             $controll = new Controller();
-            $controll->edit(basename($rota));
+            $controll->atualizaRegistro($_REQUEST);
             exit;
-        }
-
-        $controll = new Controller();
-        $controll->save($_REQUEST);
+        }else if ($_REQUEST['idf'] == "" && substr($rota, 0 , strlen("/fornecedores")) === "/fornecedores"){
+            $controll = new Controller();
+            $controll->save($_REQUEST);
+            exit;
+        }else if (substr($rota, 0 , strlen("/produtos")) === "/produtos")
+            $controll = new Controller();
+            $controll->saveProduct($_REQUEST);
+            exit;
         break;
         
     case "GET";
@@ -26,14 +30,15 @@ switch ($metodo){
             $controll->edit(basename($rota));
             exit;
         }
-        //PRODUTOS
-        if(substr($rota, 0 , strlen("/produtos")) === "/produtos"){
-           // $controll = new Controller();
-           // $controll->edit(basename($rota));
-           require "./view/produtos.php";
+
+        //Fornecedores
+        if(substr($rota, 0 , strlen("/fornecedores")) === "/fornecedores"){
+            require "./view/fornecedores.php";
             exit;
         }
+        if(substr($rota, 0 , strlen("/produtos")) === "/produtos"){
+            require "./view/produtos.php";
+            exit;
+         }
 
-        require "./view/fornecedores.php";
-        break;
 }

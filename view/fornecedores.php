@@ -44,9 +44,9 @@ include_once "./util/mensagem.php";
                         <span class="card-title black-text">Cadastrar Fornecedor</span>
 
                         <form method="POST">
-                             <input name="idf" id="id-fornecedor" type="hidden" value=""></input> 
-                             <input name="idt" id="id-telefone" type="hidden" value=""></input>
-                             <input name="ide" id="id-email" type="hidden" value=""></input>
+                             <input name="idf" id="id-fornecedor" type="hidden" ></input> 
+                             <input name="idt" id="id-telefone" type="hidden" ></input>
+                             <input name="ide" id="id-email" type="hidden" ></input>
                             <div class="row">
                                 <div class="col s12 m12 l12">
                                     <div class="col s6 m6 l6">
@@ -111,7 +111,7 @@ include_once "./util/mensagem.php";
                                         <!--input do numero telefone -->
                                         <div class="row">
                                             <div class="input-field col s3">
-                                                <input placeholder="" id="ddd" value="" type="number" min=0 class="validate" required name="ddd" value="022">
+                                                <input placeholder="" id="ddd" type="number" min=0 class="validate" required name="ddd" value="022">
                                                 <label for="ddd">DDD</label>
                                             </div>
                                             <div class="input-field col s9">
@@ -132,7 +132,7 @@ include_once "./util/mensagem.php";
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="waves-effect waves-light btn grey" href="/">Cancelar</a>
+                    <a class="waves-effect waves-light btn grey" href="/fornecedores">Cancelar</a>
                     <button type="submit" class="waves-effect waves-light btn purple" id="gravar">Salvar Alterações</button>
                 </div>
                 </form>
