@@ -121,6 +121,34 @@ class RepositoryPDO{
         
     }
 
+    public function infoProduto($id){
+        $sql = "select 
+                p.id as id_produto,
+                p.nome,
+                p.descricao,
+                i.id as id_item,
+                i.quantidade,
+                i.valor from produto p
+                inner join item i ON
+                p.id = i.id_produto
+                where p.id= :id";
+        
+        $stmt = $this->conect->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        if($stmt->rowCount()){
+            $dadosProduto = array();
+            while ($dado = $stmt->fetch(PDO::FETCH_ASSOC)){
+                array_push($dadosProduto, $dado);
+            }
+            //require "./tests/teste.php";
+            return ['dados'=>$dadosProduto];
+        }else{
+            return ['dados'=>false];
+        }
+        
+    }
+
     public function atualizaRegistroFornecedor($dados){
         $sql = "
             UPDATE fornecedor
@@ -181,15 +209,15 @@ class RepositoryPDO{
 
    public function salvarProduto($dadosProduto){
     $sql = "start TRANSACTION;
-                    INSERT INTO `produto`(id, nome, descricao) 
-                    VALUES (DEFAULT, :nome, :descricao);
-                    -- ON DUPLICATE KEY UPDATE nome= :nome, descricao= :descricao, cidade= :cidade, endereco= :endereco, bairro= :bairro, numero= :numero;
+                    INSERT INTO `produto`(id, nome, descricao, id_fornecedor) 
+                    VALUES (DEFAULT, :nome, :descricao, :id_fornecedor);
+                    --ON DUPLICATE KEY UPDATE nome= :nome, descricao= :descricao, id_fornecedor= :id_fornecedor;
     
                     SELECT LAST_INSERT_ID() INTO @intIdProduto;
                     
                     INSERT INTO `item`(id, quantidade, valor, id_produto) 
                     VALUES (DEFAULT, :quantidade, :valor, @intIdProduto);
-                    -- ON DUPLICATE KEY UPDATE email= :email;
+                    --ON DUPLICATE KEY UPDATE quantidade= :quantidade, valor = :valor;
     
                     COMMIT;";
     
@@ -199,6 +227,7 @@ class RepositoryPDO{
     $stmt->bindValue(':descricao',$dadosProduto['descricao'], PDO::PARAM_STR);
     $stmt->bindValue(':quantidade', $dadosProduto['quantidade'], PDO::PARAM_STR);
     $stmt->bindValue(':valor', $dadosProduto['valor'], PDO::PARAM_STR);
+    $stmt->bindValue(':id_fornecedor', $dadosProduto['id_fornecedor'], PDO::PARAM_INT);
     
     try{
         $stmt->execute();
@@ -212,7 +241,47 @@ class RepositoryPDO{
     }else{
         return $situacao;
     }
-}
+    }
+    public function atualizaRegistroFornecedor($dados){
+        $sql = "
+            UPDATE produto
+            SET     nome= :nome,
+                    descricao= :descricao,
+                    id_fornecedor= :id_fornecedor
+            WHERE id = :id";   
+
+        $sql2 = "UPDATE item 
+                SET     quantidade= :quantidade,
+                        valor= :valor
+                WHERE   id = '';
+
+        $stmt= $this->conect->prepare($sql);
+        $stmt2= $this->conect->prepare($sql2);
+
+        $stmt->bindValue(':id', intval($dados['idp']), PDO::PARAM_INT);
+        $stmt2->bindValue(':id', intval($dados['idi']), PDO::PARAM_INT);
+
+        $stmt2->bindValue(':id_email', $dados['ide'], PDO::PARAM_INT);
+
+        $stmt->bindValue(':nome', $dados['nome'], PDO::PARAM_STR);
+        $stmt->bindValue(':descricao',$dados['descricao'], PDO::PARAM_STR);
+        $stmt->bindValue(':cidade', $dados['cidade'], PDO::PARAM_STR);
+        $stmt->bindValue(':endereco', $dados['endereco'], PDO::PARAM_STR);
+        $stmt->bindValue(':bairro', $dados['bairro'], PDO::PARAM_STR);
+        $stmt->bindValue(':numero', $dados['numero'], PDO::PARAM_INT);
+        $stmt2->bindValue(':email', $dados['email'], PDO::PARAM_STR);
+        
+        $stmt->execute();
+        $stmt2->execute();
+
+        $situacao = $stmt->errorInfo();
+        $situacao2 = $stmt2->errorInfo();
+        if($situacao[0] == 00000 && $situacao2[0] == 00000){
+            return true;
+        }else{
+            return $situacao;
+        }
+   }
 
 }
 

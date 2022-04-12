@@ -27,7 +27,7 @@ switch ($metodo){
         
         if(substr($rota, 0 , strlen("/controle/editar/")) === "/controle/editar/"){
             $controll = new Controller();
-            $controll->edit(basename($rota));
+            $controll->edit(['dados'=>basename($rota), 'rota'=>'fornecedor']);
             exit;
         }
 
@@ -36,9 +36,15 @@ switch ($metodo){
             require "./view/fornecedores.php";
             exit;
         }
-        if(substr($rota, 0 , strlen("/produtos")) === "/produtos"){
+        if($rota === '/produtos'){
             require "./view/produtos.php";
             exit;
-         }
-
+        }
+        if(substr($rota, 0 , strlen("/controle/produto")) === "/controle/produto"){
+            $controll = new Controller();
+            $controll->edit(['dados'=>basename($rota), 'rota'=>'produto']);
+            $_SESSION['msg'] = basename($rota);
+            exit;
+        }
+        break;
 }

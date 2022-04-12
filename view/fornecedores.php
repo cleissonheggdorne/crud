@@ -31,12 +31,12 @@ include_once "./util/mensagem.php";
     <ul class="collection with-header">
         <li class="collection-header"><h4 id="title_tab">Fornecedores</h4>
             <div id="fornecedores" class="col s12">           
-                <a class="modal-trigger waves-effect waves-light btn" href="#form-fornecedor">Novo</a>
+                <a class="modal-trigger waves-effect waves-light btn" href="#form">Novo</a>
 
                 <!-- Modal Cadastrar Fornecedor  -->
     <div class="row">
             <!-- Modal Structure -->
-            <div id="form-fornecedor" class="modal modal-fixed-footer">
+            <div id="form" class="modal modal-fixed-footer">
                 
                 <div class="modal-content">
 
@@ -147,7 +147,7 @@ include_once "./util/mensagem.php";
         $dados = $control->listarDados();
         foreach ($dados as $dado) :
         ?>
-        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form-fornecedor" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        <li class="collection-item"><div><?= $dado['nome']." | ".$dado['cidade']?><a href="#form" class="secondary-content modal-trigger" onclick="editarFornecedor(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
         <?php endforeach ?>
     </ul>
       

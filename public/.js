@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var sidenav = document.querySelectorAll('.sidenav');
     var el = document.querySelectorAll('.tabs');
     var dropdown = document.querySelectorAll('.dropdown-trigger');
-    var nvForn = document.getElementById('form-fornecedor');
+    var nvForn = document.getElementById('form');
     var nvProd = document.getElementById('novo-prod');
     var nvTransp = document.getElementById('novo-transp');
 
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 async function editarFornecedor(id){
-    var edtForn = document.getElementById('novo-forn');
+    //var edtForn = document.getElementById('novo-forn');
    
     var dados = await fetch(`/controle/editar/${id}`)
     
     var resposta = await dados.json()
     console.log(resposta);
 
-     M.Modal.init(edtForn)
+    // M.Modal.init(edtForn)
 
      document.getElementById("nome").value = resposta['dados'][0].nome
      document.getElementById("descricao").value = resposta['dados'][0].descricao
@@ -55,6 +55,26 @@ async function editarFornecedor(id){
      document.getElementById().id = "atualiza_registros"
      
 
-    edtForn.open()
+    //edtForn.open()
+}
+
+async function editarProduto(id){
+    //var edtForn = document.getElementById('novo-forn');
+   
+    var dados = await fetch(`/controle/produto/${id}`)
+    
+    var resposta = await dados.json()
+    console.log(resposta);
+
+     //M.Modal.init(edtForn)
+
+     document.getElementById("nome").value = resposta['dados'][0].nome
+     document.getElementById("descricao").value = resposta['dados'][0].descricao
+     document.getElementById("quantidade").value = resposta['dados'][0].quantidade
+     document.getElementById("valor").value = resposta['dados'][0].valor
+     //document.getElementById().id = "atualiza_registros"
+     
+
+    //edtForn.open()
 }
 

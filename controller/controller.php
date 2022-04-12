@@ -25,7 +25,6 @@ class Controller{
         $repository = new RepositoryPDO();
         
         $retorno = $repository->salvarProduto($dadosProduto);
-        //$retorno = true;
         if(is_bool($retorno)){
             $_SESSION['msg'] = "Produto cadastrado com sucesso";
             header("location: /produtos");
@@ -38,7 +37,7 @@ class Controller{
     public function listarDados(){
         $repository = new RepositoryPDO();
         $dados = $repository->listaDados();
-        //$dados = ['dados'=>false];
+        
         if(!($dados['dados'] === false)){
             return $dados['dados'];
         }else{
@@ -49,7 +48,6 @@ class Controller{
     public function listProduts(){
         $repository = new RepositoryPDO();
         $dados = $repository->listaDadosProdutos();
-        //$dados = ['dados'=>false];
         if(!($dados['dados'] === false)){
             return $dados['dados'];
         }else{
@@ -57,9 +55,13 @@ class Controller{
         }
     }
 
-    public function edit($id){
+    public function edit($dados){
         $repository= new RepositoryPDO();
-        $res = $repository->infoFornecedor($id);
+        if($dados['rota'] == 'produto'){
+            $res = $repository->infoProduto($dados['dados']); 
+        }else{
+            $res = $repository->infoFornecedor($dados['dados']);
+        }
         
         header('Content-type: application/json');
         echo json_encode($res);

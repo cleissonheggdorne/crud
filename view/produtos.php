@@ -34,12 +34,12 @@ include "./util/mensagem.php";
     <ul class="collection with-header">
         <li class="collection-header"><h4 id="title_tab">Produtos</h4>
             <div id="fornecedores" class="col s12">           
-                <a class="modal-trigger waves-effect waves-light btn" href="#form-fornecedor">Novo</a>
+                <a class="modal-trigger waves-effect waves-light btn" href="#form">Novo</a>
 
-                <!-- Modal Cadastrar Fornecedor  -->
+                <!-- Modal Cadastrar Produto  -->
     <div class="row">
             <!-- Modal Structure -->
-            <div id="form-fornecedor" class="modal modal-fixed-footer">
+            <div id="form" class="modal modal-fixed-footer">
                 
                 <div class="modal-content">
 
@@ -47,9 +47,9 @@ include "./util/mensagem.php";
                         <span class="card-title black-text">Cadastrar Produto</span>
 
                         <form method="POST">
-                             <input name="idf" id="id-fornecedor" type="hidden" value=""></input> 
-                             <input name="idt" id="id-telefone" type="hidden" value=""></input>
-                             <input name="ide" id="id-email" type="hidden" value=""></input>
+                             <input name="idp" id="id-produto" type="hidden" value=""></input> 
+                             <input name="idi" id="id-telefone" type="hidden" value=""></input>
+                             <!-- <input name="ide" id="id-email" type="hidden" value=""></input> -->
                             <div class="row">
                                 <div class="col s12 m12 l12">
                                     <div class="col s6 m6 l6">
@@ -74,10 +74,10 @@ include "./util/mensagem.php";
                                         $control = new Controller();
                                         $dados = $control->listarDados();
                                         ?>
-                                        <select>
+                                        <select name="id_fornecedor">
                                             <option value="1" disabled selected>Choose your option</option>
                                         <?php foreach ($dados as $dado) : ?>
-                                            <option value="1"><?= $dado['nome'] ?></option>
+                                            <option value="<?= $dado['id'] ?>"><?= $dado['nome'] ?></option>
                                         <?php endforeach ?>
                                         </select>
                                             <label>Fornecedor</label>
@@ -89,7 +89,7 @@ include "./util/mensagem.php";
                                         <!--input do bairro -->
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="" id="qtd" type="number" step=".1" min=0 class="validate" name="quantidade" value="centro">
+                                                <input placeholder="" id="quantidade" type="number" step=".1" min=0 class="validate" name="quantidade" value="">
                                                 <label for="bairro">Quantidade</label>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@ include "./util/mensagem.php";
                                         <!--input do número-->
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="" id="val" type="number" step=".1" min=0 class="validate" value="135" name="valor">
+                                                <input placeholder="" id="valor" type="number" step=".1" min=0 class="validate" value="135" name="valor">
                                                 <label for="numero">Valor</label>
                                             </div>
                                             
@@ -122,8 +122,8 @@ include "./util/mensagem.php";
         $control = new Controller();
         $dados = $control->listProduts();
         foreach ($dados as $dado) :
-        ?>
-        <li class="collection-item"><div><?= $dado['nome']." | R$".$dado['valor']?><a href="#form-produto" class="secondary-content modal-trigger" onclick="editarProduto(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
+        ?>                                                                           
+        <li class="collection-item"><div><?= $dado['nome']." | R$".$dado['valor']?><a href="#form" id="edit_produto" class="secondary-content modal-trigger" onclick="editarProduto(<?= $dado['id']?>)"><i class="material-icons">edit</i></a></div></li>
         <?php endforeach ?>
     </ul>
       
